@@ -11,7 +11,18 @@ class DatabaseService {
     if (!instance) {
       instance = this;
       this.db = new sqlite3.Database(':memory:');
-      this.db.run("CREATE TABLE User (username TEXT UNIQUE, password TEXT, email TEXT UNIQUE)");
+      this.db.run(`CREATE TABLE user (
+                  username TEXT UNIQUE,
+                  password TEXT,
+                  email TEXT UNIQUE)`); 
+
+      this.db.run(`CREATE TABLE task (
+                   id INTEGER PRIMARY KEY AUTOINCREMENT,
+                   title TEXT,
+                   description TEXT,
+                   status TEXT,
+                   address TEXT,
+                   dueDate TEXT)`);
     }
 
     return instance;
@@ -70,6 +81,26 @@ class DatabaseService {
       } else {
         callback(null, null);
       }
+    });
+  }
+
+  addTask(task, callback) {
+    this.db.run("INSERT INTO Task (title, description, status, address, dueDate) VALUES (?, ?, ?, ?, ?)", [task.title, task.description, task.status, task.address, task.dueDate], function(err) {
+      if (err) {
+        console.error(err.message);
+        return callback(err);
+      }
+      console.log(`A row has been inserted with rowid ${this.lastID}`);
+      callback(null, this.lastID);
+    });
+  }
+
+  getTasks(callback) {
+    this.db.all("SELECT * FROM Task", (err, rows) => {
+      if (err) {
+        return callback(err);
+      }
+      callback(null, rows);
     });
   }
 }
