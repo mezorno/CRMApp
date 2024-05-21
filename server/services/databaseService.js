@@ -323,8 +323,6 @@ class DatabaseService {
       callback(null, this.lastID);
     });
   }
-
-
 }
 
 module.exports = DatabaseService;
