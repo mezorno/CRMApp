@@ -2,14 +2,14 @@ const DatabaseService = require('../services/databaseService');
 const dbService = new DatabaseService();
 
 const taskController = {
-  add: (req, res) => {
+  createTask: (req, res) => {
     const { task } = req.body;
 
     if (!task) {
         return res.status(400).send('Task is required');
     }
 
-    dbService.addTask(task, (err, id) => {
+    dbService.createTask(task, (err, id) => {
         if (err) {
             return res.status(500).send('Error adding task');
         }

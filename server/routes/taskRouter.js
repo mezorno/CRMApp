@@ -3,7 +3,7 @@ const router = express.Router();
 const authenticationMiddleware = require('../middleware/authenticationMiddleware');
 const taskController = require('../controllers/taskController');
 
-router.post('/add', authenticationMiddleware, taskController.add);
+router.post('/create', authenticationMiddleware, taskController.createTask);
 router.get('/all', authenticationMiddleware, taskController.getAllTasks);
 
 module.exports = router;

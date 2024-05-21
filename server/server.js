@@ -1,6 +1,7 @@
 const express = require('express');
 const userRouter = require('./routes/userRouter');
 const taskRouter = require('./routes/taskRouter');
+const itemRouter = require('./routes/itemRouter');
 const app = express();
 const cors = require('cors');
 
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 // configure to use 'user' routes
 app.use('/user', userRouter);
 app.use('/task', taskRouter);
+app.use('/item', itemRouter);
 
 // start server @ port 9001
 app.listen(9001, () => {

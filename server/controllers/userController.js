@@ -4,13 +4,13 @@ const jwt = require('jsonwebtoken');
 
 const userController = {
   register: (req, res) => {
-    const { username, password, email } = req.body;
+    const { AccountType, Username, Password, Email, Telephone } = req.body;
     
-    if (!username || !password || !email) {
-        return res.status(400).send('Username, password, and email are required');
+    if (!AccountType, !Username || !Password || !Email || !Telephone) {
+        return res.status(400).send('Account Type, Username, Password, Email, and Tel # are required');
     }
     
-    dbService.register(username, password, email, (err) => {
+    dbService.register(AccountType, Username, Password, Email, Telephone, (err) => {
         if (err) {
         return res.status(500).send('Error registering user');
         }
@@ -18,17 +18,16 @@ const userController = {
         res.status(200).send('Registration successful');
     });
   },
-
   login: (req, res) => {
-    const { username, password } = req.body;
+    const { Username, Password } = req.body;
 
-    dbService.login(username, password, (err, user) => {
+    dbService.login(Username, Password, (err, user) => {
       if (err) {
         res.status(500).send('Internal Server Error');
       } else if (!user) {
         res.status(401).send('Invalid username or password');
       } else {
-        const token = jwt.sign({ username: user.username }, 
+        const token = jwt.sign({ Username: user.Username }, 
                                 'LONG-ASS-KEY-WE-SHOULD-CHANGE-AT-SOME-POINT-TO-BE-LESS-GUESSABLE', 
                                 { expiresIn: '1h' });
 
@@ -36,11 +35,10 @@ const userController = {
       }
     });
   },
-
   profile: (req, res) => {
-    const { username } = req.user;
+    const { Username } = req.user;
 
-    dbService.getUser(username, (err, user) => {
+    dbService.getUser(Username, (err, user) => {
       if (err) {
         return res.status(500).send('Internal Server Error');
       }
