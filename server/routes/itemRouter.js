@@ -8,5 +8,5 @@ router.post('/update', authenticationMiddleware, itemController.updateItem);
 router.post('/get', authenticationMiddleware, itemController.getItem);
 router.get('/all', authenticationMiddleware, itemController.getAllItems);
 router.post('/updateQuantity', authenticationMiddleware, itemController.updateItemQuantity);
-
+router.get('/test', itemController.test);
 module.exports = router;

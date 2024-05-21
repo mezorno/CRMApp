@@ -84,6 +84,10 @@ class DatabaseService {
                   TransactionDate TEXT NOT NULL,
                   UserStamp TEXT NOT NULL,
                   TimeStamp TEXT NOT NULL)`);
+
+      
+      
+   //  this.seedData() 
     
     }
 
@@ -91,23 +95,74 @@ class DatabaseService {
   }
 
   seedData(){
-    this.db.run(`INSERT INTO User VALUES ('Admin', 'admin', 'admin', 'admin@admin.com', '1234567890')`);
-    
-    this.db.run(`INSERT INTO User VALUES ('Customer', 'Sally', 's@lly', 'admin@admin.com', '0987654321')`);
 
-    this.db.run(`INSERT INTO Item VALUES ('Hammer', 'A hammer', 'Each', 10.00, 'admin', '2024-05-20')`);
-    this.db.run(`INSERT INTO Item VALUES ('Nails', 'A box of nails', 'Box', 5.00, 'admin', '2024-05-20')`);
-    this.db.run(`INSERT INTO Item VALUES ('Screws', 'A box of screws', 'Box', 5.00, 'admin', '2024-05-20')`);
+    this.db.run(`INSERT INTO User (AccountType, UserName, Password, Email, Telephone) VALUES ('Admin', 'admin', 'admin', 'admin@admin.com', '1234567890')`, function(err) {
+      if (err) {
+        console.error('USER' + err.message);
+      }
 
-    this.db.run(`INSERT INTO Task VALUES ('N', 'Build Fence', 'Build a fence around the yard', 
-                                          '123 Main St', 'Toronto', 'ON', 'Canada', 'M1M1M1', '2024-05-20', 
-                                          '2024-05-25 12:30PM', 'Sally', '2024-05-20')`);
+    });
 
-    this.db.run(`INSERT INTO TaskItem (TaskId, Item, Qty, UserStamp, TimeStamp) VALUES (1, 'Hammer', 1, 'Admin', '2024-05-20')`);
-    this.db.run(`INSERT INTO TaskItem (TaskId, Item, Qty, UserStamp, TimeStamp) VALUES (1, 'Nails', 50, 'Admin', '2024-05-20')`);
-    this.db.run(`INSERT INTO TaskActivity (TaskId, Activity, UserStamp, TimeStamp) VALUES (1, 'Hammer Nail for fence', 'Admin', '2024-05-25 12:30PM')`);
-    this.db.run(`INSERT INTO TaskActivity (TaskId, Activity, UserStamp, TimeStamp) VALUES (1, 'Place fence', 'Admin', '2024-05-25 12:30PM')`);
+    this.db.run(`INSERT INTO User (AccountType, UserName, Password, Email, Telephone) VALUES ('Customer', 'Sally', 's@lly', 'sally@sallysemailservice.com', '0987654321')`, function(err) {
+      if (err) {
+        console.error('USER' + err.message);
+      }
+    });
+
+    this.db.run(`INSERT INTO Item (Item, Description, UOM, Price, UserStamp, TimeStamp) VALUES ('Hammer', 'A hammer', 'Each', 10.00, 'admin', '2024-05-20')`, function(err) {
+      if (err) {
+        console.error('ITEM' + err.message);
+      }
+    });
+
+    this.db.run(`INSERT INTO Item (Item, Description, UOM, Price, UserStamp, TimeStamp) VALUES ('Nails', 'A box of nails', 'Box', 5.00, 'admin', '2024-05-20')`, function(err) {
+      if (err) {
+        console.error('ITEM' + err.message);
+      }
+    });
+
+    this.db.run(`INSERT INTO Item (Item, Description, UOM, Price, UserStamp, TimeStamp) VALUES ('Screws', 'A box of screws', 'Box', 5.00, 'admin', '2024-05-20')`, function(err) {
+      if (err) {
+        console.error('USER' + err.message);
+      }
+    });
+
+    this.db.run(`INSERT INTO Task (OwnerID, Status, Name, Description, Address, City, Province, 
+                                   Country, PostalCode, CreatedAt, ScheduleDate, UserStamp, TimeStamp) 
+                             VALUES (2, 'N', 'Build Fence', 'Build a fence around the yard', 
+                                     '123 Main St', 'Toronto', 'ON', 'Canada', 'M1M1M1', '2024-05-20', 
+                                    '2024-05-25 12:30PM', 'Sally', '2024-05-20')`, function(err) {
+      if (err) {
+        console.error('TASK' + err.message);
+      }
+    });
+
+    this.db.run(`INSERT INTO TaskItem (TaskId, Item, Qty, UserStamp, TimeStamp) VALUES (1, 'Hammer', 1, 'Admin', '2024-05-20')`, function(err) {
+      if (err) {
+        console.error('TASK ITEM' + err.message);
+      }
+    });
+
+    this.db.run(`INSERT INTO TaskItem (TaskId, Item, Qty, UserStamp, TimeStamp) VALUES (1, 'Nails', 50, 'Admin', '2024-05-20')`, 
+    function(err) {
+      if (err) {
+        console.error('TASK ITEM' + err.message);
+      }
+    });
+    this.db.run(`INSERT INTO TaskActivity (TaskId, Activity, UserStamp, TimeStamp) VALUES (1, 'Hammer Nail for fence', 'Admin', '2024-05-25 12:30PM')`, function(err) {
+      if (err) {
+        console.error('TASK ACTIVITY' + err.message);
+      }
+    });
+
+    this.db.run(`INSERT INTO TaskActivity (TaskId, Activity, UserStamp, TimeStamp) VALUES (1, 'Place fence', 'Admin', '2024-05-25 12:30PM')`,
+    function(err) {
+      if (err) {
+        console.error('TASK ACTIVITY' + err.message);
+      }
+    });
   }
+
   // USER FUNCTIONS
   register(AccountType, Username, Password, Email, Telephone, callback) {
     bcrypt.hash(Password, salt, (err, hash) => {
@@ -132,7 +187,7 @@ class DatabaseService {
           console.error(err.message);
           return callback(err);
         }
-        console.log(`New User Created - User ID: ${this.lastID}`);
+
         callback(null);
       });
     });

@@ -70,6 +70,10 @@ const itemController = {
 
         res.status(200).send(tasks);
     });
+  },
+  test (req, res) {
+    dbService.seedData();
+    res.status(200).send('data seeded');
   }
 };
 
